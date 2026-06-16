@@ -1,5 +1,7 @@
 package com.healthcare.entity;
 
+import com.healthcare.enums.Role;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

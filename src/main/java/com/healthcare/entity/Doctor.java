@@ -1,5 +1,7 @@
 package com.healthcare.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -29,4 +31,8 @@ public class Doctor {
 	private String email;
 	
 	private Integer experience;
+	
+	@OneToMany(mappedBy = "doctor",
+			cascade = CascadeType.ALL)
+	private List<Appointment> appointments;
 }

@@ -1,4 +1,4 @@
-package com.healthcare.entity;
+package com.healthcare.enums;
 
 public enum Role {
 	ADMIN,

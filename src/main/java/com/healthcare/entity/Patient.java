@@ -1,12 +1,15 @@
 package com.healthcare.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
@@ -35,4 +38,8 @@ public class Patient {
 	private String email;
 
 	private String address;
+	
+	@OneToMany(mappedBy = "patient",
+			cascade = CascadeType.ALL)
+	private List<Appointment> appointments;
 }
