@@ -16,23 +16,27 @@ public class Doctor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank
 	private String name;
-	
+
 	@NotBlank
-    private String specialization;
-	
+	private String specialization;
+
 	@NotBlank
 	private String phone;
-	
+
 	@NotBlank
 	@Column(unique = true)
 	private String email;
-	
+
 	private Integer experience;
-	
-	@OneToMany(mappedBy = "doctor",
+
+	@OneToMany(mappedBy = "doctor", 
 			cascade = CascadeType.ALL)
 	private List<Appointment> appointments;
+
+	@OneToMany(mappedBy = "doctor", 
+			cascade = CascadeType.ALL)
+	private List<MedicalRecord> records;
 }
