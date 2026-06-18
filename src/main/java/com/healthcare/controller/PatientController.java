@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthcare.dto.request.PatientRequest;
+import com.healthcare.dto.response.ApiResponse;
 import com.healthcare.dto.response.PatientResponse;
 import com.healthcare.service.PatientService;
 
@@ -23,32 +24,57 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PatientController {
 
-	private final PatientService service;
+    private final PatientService service;
 
-	@PostMapping
-	public PatientResponse addPatient(@Valid @RequestBody PatientRequest request) {
-		return service.addPatient(request);
-	}
+    @PostMapping
+    public ApiResponse<PatientResponse> addPatient(
+            @Valid @RequestBody PatientRequest request) {
 
-	@GetMapping("/{id}")
-	public PatientResponse getPatient(@PathVariable Long id) {
-		return service.getPatient(id);
-	}
+        return new ApiResponse<>(
+                true,
+                "Patient Added Successfully",
+                service.addPatient(request));
+    }
 
-	@GetMapping
-	public List<PatientResponse> getAllPatients() {
-		return service.getAllPatient();
-	}
+    @GetMapping("/{id}")
+    public ApiResponse<PatientResponse> getPatient(
+            @PathVariable Long id) {
 
-	@PutMapping("/{id}")
-	public PatientResponse updatePatient(@PathVariable Long id, 
-			@Valid @RequestBody PatientRequest request) {
-		return service.updatePatient(id, request);
-	}
-	
-	@DeleteMapping("/{id}")
-	public void deletePatient(@PathVariable Long id) {
-		service.deletePatient(id);
-	}
-	
+        return new ApiResponse<>(
+                true,
+                "Patient Fetched Successfully",
+                service.getPatient(id));
+    }
+
+    @GetMapping
+    public ApiResponse<List<PatientResponse>> getAllPatients() {
+
+        return new ApiResponse<>(
+                true,
+                "Patients Fetched Successfully",
+                service.getAllPatient());
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<PatientResponse> updatePatient(
+            @PathVariable Long id,
+            @Valid @RequestBody PatientRequest request) {
+
+        return new ApiResponse<>(
+                true,
+                "Patient Updated Successfully",
+                service.updatePatient(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ApiResponse<String> deletePatient(
+            @PathVariable Long id) {
+
+        service.deletePatient(id);
+
+        return new ApiResponse<>(
+                true,
+                "Patient Deleted Successfully",
+                null);
+    }
 }

@@ -15,6 +15,7 @@ import com.healthcare.repository.DoctorRepository;
 import com.healthcare.repository.MedicalRecordRepository;
 import com.healthcare.repository.PatientRepository;
 import com.healthcare.service.MedicalRecordService;
+import com.healthcare.util.AppConstants;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,10 +30,10 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
 	@Override
 	public MedicalRecordResponse createReport(MedicalRecordRequest request) {
 		Patient patient = patientRepository.findById(request.getPatientId())
-				.orElseThrow(() -> new ResourceNotFoundException("Patient Not Found"));
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PATIENT_NOT_FOUND));
 
 		Doctor doctor = doctorRepository.findById(request.getDoctorId())
-				.orElseThrow(() -> new ResourceNotFoundException("Doctor Not FOund"));
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.DOCTOR_NOT_FOUND));
 
 		MedicalRecord record = new MedicalRecord();
 		record.setPatient(patient);
@@ -51,13 +52,13 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
 	public MedicalRecordResponse updateReport(Long id, MedicalRecordRequest request) {
 
 		MedicalRecord record = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Medical Record Not Found"));
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.RECORD_NOT_FOUND));
 
 		Patient patient = patientRepository.findById(request.getPatientId())
-				.orElseThrow(() -> new ResourceNotFoundException("Patient Not Found"));
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PATIENT_NOT_FOUND));
 
 		Doctor doctor = doctorRepository.findById(request.getDoctorId())
-				.orElseThrow(() -> new ResourceNotFoundException("Doctor Not Found"));
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.DOCTOR_NOT_FOUND));
 
 		record.setPatient(patient);
 		record.setDoctor(doctor);
@@ -74,7 +75,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
 	@Override
 	public List<MedicalRecordResponse> getPatientRecords(Long patientId) {
 		patientRepository.findById(patientId)
-		.orElseThrow(() -> new ResourceNotFoundException("Patient Not Found"));
+		.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PATIENT_NOT_FOUND));
 
 		List<MedicalRecord> records = repository.findByPatientId(patientId);
 

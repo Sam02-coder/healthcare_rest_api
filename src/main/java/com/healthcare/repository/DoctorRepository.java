@@ -8,5 +8,7 @@ import com.healthcare.entity.Doctor;
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Long>{
 
+	boolean existsByEmail(String email);
+
 
 }

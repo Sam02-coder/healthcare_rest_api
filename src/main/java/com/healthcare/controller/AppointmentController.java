@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthcare.dto.request.AppointmentRequest;
+import com.healthcare.dto.response.ApiResponse;
 import com.healthcare.dto.response.AppointmentResponse;
 import com.healthcare.service.AppointmentService;
 
@@ -22,41 +23,66 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AppointmentController {
 
-	private final AppointmentService service;
+    private final AppointmentService service;
 
-	@PostMapping
-	public AppointmentResponse bookAppointment(
-			@Valid @RequestBody AppointmentRequest request) {
-		return service.bookAppointment(request);
-	}
+    @PostMapping
+    public ApiResponse<AppointmentResponse> bookAppointment(
+            @Valid @RequestBody AppointmentRequest request) {
 
-	@GetMapping("/{id}")
-	public AppointmentResponse getAppointment(@PathVariable Long id) {
-		return service.getAppointment(id);
-	}
+        return new ApiResponse<>(
+                true,
+                "Appointment Booked Successfully",
+                service.bookAppointment(request));
+    }
 
-	@GetMapping
-	public List<AppointmentResponse> getAllAppointments() {
-		return service.getAllAppointments();
-	}
+    @GetMapping("/{id}")
+    public ApiResponse<AppointmentResponse> getAppointment(
+            @PathVariable Long id) {
 
-	@GetMapping("/doctor/{doctorId}")
-	public List<AppointmentResponse> getDoctorAppointments(
-			@PathVariable Long doctorId) {
-		return service.getDoctorAppointments(doctorId);
-	}
+        return new ApiResponse<>(
+                true,
+                "Appointment Fetched Successfully",
+                service.getAppointment(id));
+    }
 
-	@GetMapping("/patient/{patientId}")
-	public List<AppointmentResponse> getPatientAppointments(
-			@PathVariable Long patientId) {
-		return service.getPatientAppointments(patientId);
-	}
+    @GetMapping
+    public ApiResponse<List<AppointmentResponse>> getAllAppointments() {
 
-	@DeleteMapping("/{id}/cancel")
-	public String cancelAppointments(@PathVariable Long id) {
-		service.cancelAppointment(id);
+        return new ApiResponse<>(
+                true,
+                "Appointments Fetched Successfully",
+                service.getAllAppointments());
+    }
 
-		return "Appointment Cancelled";
-	}
+    @GetMapping("/doctor/{doctorId}")
+    public ApiResponse<List<AppointmentResponse>> getDoctorAppointments(
+            @PathVariable Long doctorId) {
 
+        return new ApiResponse<>(
+                true,
+                "Doctor Appointments Fetched Successfully",
+                service.getDoctorAppointments(doctorId));
+    }
+
+    @GetMapping("/patient/{patientId}")
+    public ApiResponse<List<AppointmentResponse>> getPatientAppointments(
+            @PathVariable Long patientId) {
+
+        return new ApiResponse<>(
+                true,
+                "Patient Appointments Fetched Successfully",
+                service.getPatientAppointments(patientId));
+    }
+
+    @DeleteMapping("/{id}/cancel")
+    public ApiResponse<String> cancelAppointment(
+            @PathVariable Long id) {
+
+        service.cancelAppointment(id);
+
+        return new ApiResponse<>(
+                true,
+                "Appointment Cancelled Successfully",
+                null);
+    }
 }

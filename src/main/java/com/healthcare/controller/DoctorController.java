@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthcare.dto.request.DoctorRequest;
+import com.healthcare.dto.response.ApiResponse;
 import com.healthcare.dto.response.DoctorResponse;
 import com.healthcare.service.DoctorService;
 
@@ -23,44 +24,62 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DoctorController {
 
-	private final DoctorService doctorService;
+    private final DoctorService doctorService;
 
     @PostMapping
-    public DoctorResponse addDoctor(
-            @Valid
-            @RequestBody DoctorRequest request) {
+    public ApiResponse<DoctorResponse> addDoctor(
+            @Valid @RequestBody DoctorRequest request) {
 
-        return doctorService.addDoctor(request);
+        return new ApiResponse<>(
+                true,
+                "Doctor Added Successfully",
+                doctorService.addDoctor(request)
+        );
     }
 
     @GetMapping("/{id}")
-    public DoctorResponse getDoctor(
+    public ApiResponse<DoctorResponse> getDoctor(
             @PathVariable Long id) {
 
-        return doctorService.getDoctor(id);
+        return new ApiResponse<>(
+                true,
+                "Doctor Fetched Successfully",
+                doctorService.getDoctor(id)
+        );
     }
 
     @GetMapping
-    public List<DoctorResponse> getAllDoctors() {
+    public ApiResponse<List<DoctorResponse>> getAllDoctors() {
 
-        return doctorService.getAllDoctors();
+        return new ApiResponse<>(
+                true,
+                "Doctors Fetched Successfully",
+                doctorService.getAllDoctors()
+        );
     }
 
     @PutMapping("/{id}")
-    public DoctorResponse updateDoctor(
+    public ApiResponse<DoctorResponse> updateDoctor(
             @PathVariable Long id,
-            @RequestBody DoctorRequest request) {
+            @Valid @RequestBody DoctorRequest request) {
 
-        return doctorService.updateDoctor(
-                id,
-                request);
+        return new ApiResponse<>(
+                true,
+                "Doctor Updated Successfully",
+                doctorService.updateDoctor(id, request)
+        );
     }
 
     @DeleteMapping("/{id}")
-    public void deleteDoctor(
+    public ApiResponse<String> deleteDoctor(
             @PathVariable Long id) {
 
         doctorService.deleteDoctor(id);
-    }
 
+        return new ApiResponse<>(
+                true,
+                "Doctor Deleted Successfully",
+                null
+        );
+    }
 }

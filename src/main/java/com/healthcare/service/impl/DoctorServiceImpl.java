@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import com.healthcare.dto.request.DoctorRequest;
 import com.healthcare.dto.response.DoctorResponse;
 import com.healthcare.entity.Doctor;
+import com.healthcare.exception.DuplicateResourceException;
 import com.healthcare.exception.ResourceNotFoundException;
 import com.healthcare.mapper.DoctorMapper;
 import com.healthcare.repository.DoctorRepository;
 import com.healthcare.service.DoctorService;
+import com.healthcare.util.AppConstants;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,97 +22,75 @@ import lombok.RequiredArgsConstructor;
 public class DoctorServiceImpl implements DoctorService {
 
 	private final DoctorRepository doctorRepository;
-	
-	
+
 	@Override
-	public DoctorResponse addDoctor(
-	        DoctorRequest request) {
+	public DoctorResponse addDoctor(DoctorRequest request) {
 
-	    Doctor doctor = new Doctor();
+		if (doctorRepository.existsByEmail(request.getEmail())) {
 
-	    doctor.setName(request.getName());
-	    doctor.setEmail(request.getEmail());
-	    doctor.setPhone(request.getPhone());
-	    doctor.setSpecialization(
-	            request.getSpecialization());
-	    doctor.setExperience(
-	            request.getExperience());
+			throw new DuplicateResourceException("Email already exists");
+		}
 
-	    Doctor savedDoctor =
-	            doctorRepository.save(doctor);
+		Doctor doctor = new Doctor();
 
-	    return DoctorMapper.mapToResponse(
-	            savedDoctor);
+		doctor.setName(request.getName());
+		doctor.setEmail(request.getEmail());
+		doctor.setPhone(request.getPhone());
+		doctor.setSpecialization(request.getSpecialization());
+		doctor.setExperience(request.getExperience());
+
+		Doctor savedDoctor = doctorRepository.save(doctor);
+
+		return DoctorMapper.mapToResponse(savedDoctor);
 	}
 
 	@Override
-	public DoctorResponse getDoctor(
-	        Long id) {
+	public DoctorResponse getDoctor(Long id) {
 
-	    Doctor doctor =
-	            doctorRepository.findById(id)
-	                    .orElseThrow(() ->
-	                            new ResourceNotFoundException(
-	                                    "Doctor not found with id " + id));
+		Doctor doctor = doctorRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.DOCTOR_NOT_FOUND));
 
-	    return DoctorMapper.mapToResponse(
-	            doctor);
+		return DoctorMapper.mapToResponse(doctor);
 	}
 
 	@Override
 	public List<DoctorResponse> getAllDoctors() {
 
-	    List<Doctor> doctors =
-	            doctorRepository.findAll();
+		List<Doctor> doctors = doctorRepository.findAll();
 
-	    List<DoctorResponse> responses =
-	            new ArrayList<>();
+		List<DoctorResponse> responses = new ArrayList<>();
 
-	    for (Doctor doctor : doctors) {
+		for (Doctor doctor : doctors) {
 
-	        responses.add(
-	                DoctorMapper.mapToResponse(
-	                        doctor));
-	    }
+			responses.add(DoctorMapper.mapToResponse(doctor));
+		}
 
-	    return responses;
+		return responses;
 	}
 
 	@Override
-	public DoctorResponse updateDoctor(
-	        Long id,
-	        DoctorRequest request) {
+	public DoctorResponse updateDoctor(Long id, DoctorRequest request) {
 
-	    Doctor doctor =
-	            doctorRepository.findById(id)
-	                    .orElseThrow(() ->
-	                            new ResourceNotFoundException(
-	                                    "Doctor not found with id " + id));
+		Doctor doctor = doctorRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.DOCTOR_NOT_FOUND));
 
-	    doctor.setName(request.getName());
-	    doctor.setEmail(request.getEmail());
-	    doctor.setPhone(request.getPhone());
-	    doctor.setSpecialization(
-	            request.getSpecialization());
-	    doctor.setExperience(
-	            request.getExperience());
+		doctor.setName(request.getName());
+		doctor.setEmail(request.getEmail());
+		doctor.setPhone(request.getPhone());
+		doctor.setSpecialization(request.getSpecialization());
+		doctor.setExperience(request.getExperience());
 
-	    Doctor updatedDoctor =
-	            doctorRepository.save(doctor);
+		Doctor updatedDoctor = doctorRepository.save(doctor);
 
-	    return DoctorMapper.mapToResponse(
-	            updatedDoctor);
+		return DoctorMapper.mapToResponse(updatedDoctor);
 	}
 
 	@Override
 	public void deleteDoctor(Long id) {
 
-	    Doctor doctor =
-	            doctorRepository.findById(id)
-	                    .orElseThrow(() ->
-	                            new ResourceNotFoundException(
-	                                    "Doctor not found with id " + id));
+		Doctor doctor = doctorRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.DOCTOR_NOT_FOUND));
 
-	    doctorRepository.delete(doctor);
+		doctorRepository.delete(doctor);
 	}
 }

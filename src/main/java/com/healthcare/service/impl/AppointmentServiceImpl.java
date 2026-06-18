@@ -16,6 +16,7 @@ import com.healthcare.repository.AppointmentRepository;
 import com.healthcare.repository.DoctorRepository;
 import com.healthcare.repository.PatientRepository;
 import com.healthcare.service.AppointmentService;
+import com.healthcare.util.AppConstants;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,10 +31,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public AppointmentResponse bookAppointment(AppointmentRequest request) {
 		Doctor doctor = doctorRepository.findById(request.getDoctorId())
-				.orElseThrow(() -> new ResourceNotFoundException("Doctor Not Found"));
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.DOCTOR_NOT_FOUND));
 
 		Patient patient = patientRepository.findById(request.getPatientId())
-				.orElseThrow(() -> new ResourceNotFoundException("Patient Not Found"));
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PATIENT_NOT_FOUND));
 
 		Appointment appointment = new Appointment();
 
@@ -51,7 +52,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public AppointmentResponse getAppointment(Long id) {
 		Appointment appointment = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Data Not Found"));
+				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.APPOINTMENT_NOT_FOUND));
 		return AppointmentMapper.map(appointment);
 	}
 
@@ -96,7 +97,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public void cancelAppointment(Long id) {
 		Appointment appointment=repository.findById(id)
-				.orElseThrow(()-> new ResourceNotFoundException("Application Not found"));
+				.orElseThrow(()-> new ResourceNotFoundException(AppConstants.APPOINTMENT_NOT_FOUND));
 		
 		appointment.setStatus(AppointmentStatus.CANCELLD);
 		repository.save(appointment);

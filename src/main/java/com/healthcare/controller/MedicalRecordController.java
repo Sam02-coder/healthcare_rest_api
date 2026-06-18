@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthcare.dto.request.MedicalRecordRequest;
+import com.healthcare.dto.response.ApiResponse;
 import com.healthcare.dto.response.MedicalRecordResponse;
 import com.healthcare.service.MedicalRecordService;
 
@@ -19,27 +20,39 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/medical_records")
+@RequestMapping("/api/medical-records")
 public class MedicalRecordController {
 
-	private final MedicalRecordService service;
+    private final MedicalRecordService service;
 
-	@PostMapping
-	public MedicalRecordResponse createRecord(
-			@Valid @RequestBody MedicalRecordRequest request) {
-		return service.createReport(request);
-	}
+    @PostMapping
+    public ApiResponse<MedicalRecordResponse> createRecord(
+            @Valid @RequestBody MedicalRecordRequest request) {
 
-	@PutMapping("/{id}")
-	public MedicalRecordResponse updateRecord(
-			@PathVariable Long id, 
-			@Valid @RequestBody MedicalRecordRequest request) {
-		return service.updateReport(id, request);
-	}
+        return new ApiResponse<>(
+                true,
+                "Medical Record Created Successfully",
+                service.createReport(request));
+    }
 
-	@GetMapping("/{patientId}")
-	public List<MedicalRecordResponse> getPatientRecords(
-			@PathVariable Long patientId) {
-		return service.getPatientRecords(patientId);
-	}
+    @PutMapping("/{id}")
+    public ApiResponse<MedicalRecordResponse> updateRecord(
+            @PathVariable Long id,
+            @Valid @RequestBody MedicalRecordRequest request) {
+
+        return new ApiResponse<>(
+                true,
+                "Medical Record Updated Successfully",
+                service.updateReport(id, request));
+    }
+
+    @GetMapping("/patient/{patientId}")
+    public ApiResponse<List<MedicalRecordResponse>> getPatientRecords(
+            @PathVariable Long patientId) {
+
+        return new ApiResponse<>(
+                true,
+                "Medical Records Fetched Successfully",
+                service.getPatientRecords(patientId));
+    }
 }

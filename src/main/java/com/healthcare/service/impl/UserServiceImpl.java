@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.healthcare.entity.User;
+import com.healthcare.exception.DuplicateResourceException;
 import com.healthcare.repository.UserRepository;
 import com.healthcare.service.UserService;
 
@@ -18,6 +19,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User save(User user) {
+		if (userRepository.existsByEmail(user.getEmail())) {
+
+			throw new DuplicateResourceException("Email already exists");
+		}
 		return userRepository.save(user);
 	}
 
