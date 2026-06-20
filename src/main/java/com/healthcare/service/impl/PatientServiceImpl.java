@@ -1,11 +1,15 @@
 package com.healthcare.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.healthcare.dto.request.PatientRequest;
+import com.healthcare.dto.response.PageResponse;
 import com.healthcare.dto.response.PatientResponse;
 import com.healthcare.entity.Patient;
 import com.healthcare.exception.DuplicateResourceException;
@@ -51,15 +55,37 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
-	public List<PatientResponse> getAllPatient() {
-		List<Patient> patients = repository.findAll();
+	public PageResponse<PatientResponse> getAllPatients(
+			int pageNo, 
+			int pageSize, 
+			String sortBy, 
+			String sortDir) {
 
-		List<PatientResponse> responses = new ArrayList<>();
+		Sort sort = sortDir.equalsIgnoreCase("asc") 
+				? Sort.by(sortBy).ascending() 
+				: Sort.by(sortBy).descending();
 
-		for (Patient patient : patients) {
-			responses.add(PatientMapper.mapToResponse(patient));
-		}
-		return responses;
+		Pageable pageable = PageRequest
+				.of(pageNo, pageSize, sort);
+
+		Page<Patient> page = repository.findAll(pageable);
+
+		List<PatientResponse> responses = page
+				.getContent()
+				.stream()
+				.map(PatientMapper::mapToResponse)
+				.toList();
+
+		PageResponse<PatientResponse> response = new PageResponse<>();
+
+		response.setContent(responses);
+		response.setPageNo(page.getNumber());
+		response.setPageSize(page.getSize());
+		response.setTotalElements(page.getTotalElements());
+		response.setTotalPages(page.getTotalPages());
+		response.setLast(page.isLast());
+
+		return response;
 	}
 
 	@Override
@@ -83,6 +109,16 @@ public class PatientServiceImpl implements PatientService {
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PATIENT_NOT_FOUND));
 		repository.delete(patient);
 
+	}
+
+	@Override
+	public List<PatientResponse> searchPatient(String keyword) {
+
+		return repository
+				.findByNameContainingIgnoreCase(keyword)
+				.stream()
+				.map(PatientMapper::mapToResponse)
+				.toList();
 	}
 
 }

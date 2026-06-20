@@ -2,10 +2,15 @@ package com.healthcare.service.impl;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.healthcare.dto.request.MedicalRecordRequest;
 import com.healthcare.dto.response.MedicalRecordResponse;
+import com.healthcare.dto.response.PageResponse;
 import com.healthcare.entity.Doctor;
 import com.healthcare.entity.MedicalRecord;
 import com.healthcare.entity.Patient;
@@ -73,16 +78,43 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
 	}
 
 	@Override
-	public List<MedicalRecordResponse> getPatientRecords(Long patientId) {
-		patientRepository.findById(patientId)
-		.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PATIENT_NOT_FOUND));
+	public PageResponse<MedicalRecordResponse> getMedicalRecordsByPatient(
+	        Long patientId,
+	        int pageNo,
+	        int pageSize,
+	        String sortBy,
+	        String sortDir) {
 
-		List<MedicalRecord> records = repository.findByPatientId(patientId);
+	    Sort sort = sortDir.equalsIgnoreCase("asc")
+	            ? Sort.by(sortBy).ascending()
+	            : Sort.by(sortBy).descending();
 
-		return records
-				.stream()
-				.map(MedicalRecordMapper::map)
-				.toList();
+	    Pageable pageable =PageRequest.of(
+	                    pageNo,
+	                    pageSize,
+	                    sort);
+
+	    Page<MedicalRecord> page =repository.findByPatientId(
+	                    patientId,
+	                    pageable);
+
+	    List<MedicalRecordResponse> responses =
+	            page.getContent()
+	                    .stream()
+	                    .map(MedicalRecordMapper::map)
+	                    .toList();
+
+	    PageResponse<MedicalRecordResponse> response =
+	            new PageResponse<>();
+
+	    response.setContent(responses);
+	    response.setPageNo(page.getNumber());
+	    response.setPageSize(page.getSize());
+	    response.setTotalElements(page.getTotalElements());
+	    response.setTotalPages(page.getTotalPages());
+	    response.setLast(page.isLast());
+
+	    return response;
 	}
 
 }

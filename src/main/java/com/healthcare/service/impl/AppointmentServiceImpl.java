@@ -1,11 +1,15 @@
 package com.healthcare.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.healthcare.dto.request.AppointmentRequest;
 import com.healthcare.dto.response.AppointmentResponse;
+import com.healthcare.dto.response.PageResponse;
 import com.healthcare.entity.Appointment;
 import com.healthcare.entity.Doctor;
 import com.healthcare.entity.Patient;
@@ -57,41 +61,151 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 
 	@Override
-	public List<AppointmentResponse> getAllAppointments() {
-		List<Appointment> appointments = repository.findAll();
+	public PageResponse<AppointmentResponse> getAllAppointments(
+	        int pageNo,
+	        int pageSize,
+	        String sortBy,
+	        String sortDir) {
 
-		List<AppointmentResponse> responses = new ArrayList<>();
+	    Sort sort = sortDir.equalsIgnoreCase("asc")
+	            ? Sort.by(sortBy).ascending()
+	            : Sort.by(sortBy).descending();
 
-		for (Appointment appointment : appointments) {
-			responses.add(AppointmentMapper.map(appointment));
-		}
-		return responses;
+	    Pageable pageable =
+	            PageRequest.of(pageNo, pageSize, sort);
+
+	    Page<Appointment> page =
+	            repository.findAll(pageable);
+
+	    List<AppointmentResponse> responses =
+	            page.getContent()
+	                    .stream()
+	                    .map(AppointmentMapper::map)
+	                    .toList();
+
+	    PageResponse<AppointmentResponse> response =
+	            new PageResponse<>();
+
+	    response.setContent(responses);
+	    response.setPageNo(page.getNumber());
+	    response.setPageSize(page.getSize());
+	    response.setTotalElements(page.getTotalElements());
+	    response.setTotalPages(page.getTotalPages());
+	    response.setLast(page.isLast());
+
+	    return response;
+	}
+	@Override
+	public PageResponse<AppointmentResponse> getAppointmentsByPatient(
+	        Long patientId,
+	        int pageNo,
+	        int pageSize,
+	        String sortBy,
+	        String sortDir) {
+
+	    Sort sort = sortDir.equalsIgnoreCase("asc")
+	            ? Sort.by(sortBy).ascending()
+	            : Sort.by(sortBy).descending();
+
+	    Pageable pageable =
+	            PageRequest.of(pageNo, pageSize, sort);
+
+	    Page<Appointment> page =
+	            repository.findByPatientId(
+	                    patientId,
+	                    pageable);
+
+	    List<AppointmentResponse> responses =
+	            page.getContent()
+	                    .stream()
+	                    .map(AppointmentMapper::map)
+	                    .toList();
+
+	    PageResponse<AppointmentResponse> response =
+	            new PageResponse<>();
+
+	    response.setContent(responses);
+	    response.setPageNo(page.getNumber());
+	    response.setPageSize(page.getSize());
+	    response.setTotalElements(page.getTotalElements());
+	    response.setTotalPages(page.getTotalPages());
+	    response.setLast(page.isLast());
+
+	    return response;
 	}
 
 	@Override
-	public List<AppointmentResponse> getDoctorAppointments(Long doctorId) {
+	public PageResponse<AppointmentResponse> getAppointmentsByDoctor(
+	        Long doctorId,
+	        int pageNo,
+	        int pageSize,
+	        String sortBy,
+	        String sortDir) {
 
-		List<Appointment> appointments = repository.findByDoctorId(doctorId);
+	    Sort sort = sortDir.equalsIgnoreCase("asc")
+	            ? Sort.by(sortBy).ascending()
+	            : Sort.by(sortBy).descending();
 
-		List<AppointmentResponse> responses = new ArrayList<>();
+	    Pageable pageable =PageRequest.of(pageNo, pageSize, sort);
 
-		for (Appointment appointment : appointments) {
-			responses.add(AppointmentMapper.map(appointment));
-		}
-		return responses;
+	    Page<Appointment> page =repository.findByDoctorId(
+	                    doctorId,
+	                    pageable);
+
+	    List<AppointmentResponse> responses =
+	            page.getContent()
+	                    .stream()
+	                    .map(AppointmentMapper::map)
+	                    .toList();
+
+	    PageResponse<AppointmentResponse> response =
+	            new PageResponse<>();
+
+	    response.setContent(responses);
+	    response.setPageNo(page.getNumber());
+	    response.setPageSize(page.getSize());
+	    response.setTotalElements(page.getTotalElements());
+	    response.setTotalPages(page.getTotalPages());
+	    response.setLast(page.isLast());
+
+	    return response;
 	}
 
 	@Override
-	public List<AppointmentResponse> getPatientAppointments(Long patientId) {
-		List<Appointment> appointments = repository.findByPatientId(patientId);
+	public PageResponse<AppointmentResponse> getAppointmentsByStatus(
+	        AppointmentStatus status,
+	        int pageNo,
+	        int pageSize,
+	        String sortBy,
+	        String sortDir) {
 
-		List<AppointmentResponse> responses = new ArrayList<>();
+	    Sort sort = sortDir.equalsIgnoreCase("asc")
+	            ? Sort.by(sortBy).ascending()
+	            : Sort.by(sortBy).descending();
 
-		for (Appointment appointment : appointments) {
-			responses.add(AppointmentMapper.map(appointment));
-		}
+	    Pageable pageable =PageRequest.of(pageNo, pageSize, sort);
 
-		return responses;
+	    Page<Appointment> page =repository.findByStatus(
+	                    status,
+	                    pageable);
+
+	    List<AppointmentResponse> responses =
+	            page.getContent()
+	                    .stream()
+	                    .map(AppointmentMapper::map)
+	                    .toList();
+
+	    PageResponse<AppointmentResponse> response =
+	            new PageResponse<>();
+
+	    response.setContent(responses);
+	    response.setPageNo(page.getNumber());
+	    response.setPageSize(page.getSize());
+	    response.setTotalElements(page.getTotalElements());
+	    response.setTotalPages(page.getTotalPages());
+	    response.setLast(page.isLast());
+
+	    return response;
 	}
 
 	@Override

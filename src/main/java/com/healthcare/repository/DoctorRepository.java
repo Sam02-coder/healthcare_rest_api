@@ -1,5 +1,7 @@
 package com.healthcare.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +12,8 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long>{
 
 	boolean existsByEmail(String email);
 
+	List<Doctor> findByNameContainingIgnoreCase(String keyword);
+
+	List<Doctor> findBySpecializationContainingIgnoreCase(String specialization);
 
 }

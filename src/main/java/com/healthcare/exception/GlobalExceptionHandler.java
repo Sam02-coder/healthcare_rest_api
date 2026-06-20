@@ -31,6 +31,20 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	}
 
+	@ExceptionHandler(DuplicateResourceException.class)
+	public ResponseEntity<ErrorResponse> duplicateResourceException(DuplicateResourceException ex){
+		ErrorResponse response = new ErrorResponse();
+
+		response.setTimestamp(LocalDateTime.now());
+
+		response.setStatus(409);
+
+		response.setError("Duplicate Resources");
+
+		response.setMessage(ex.getMessage());
+
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+	}
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, String>> handleValidation(MethodArgumentNotValidException ex) {
 
@@ -41,4 +55,5 @@ public class GlobalExceptionHandler {
 
 		return ResponseEntity.badRequest().body(errors);
 	}
+	
 }

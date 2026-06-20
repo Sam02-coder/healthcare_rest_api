@@ -1,9 +1,9 @@
 package com.healthcare.service;
 
-import java.util.List;
-
 import com.healthcare.dto.request.AppointmentRequest;
 import com.healthcare.dto.response.AppointmentResponse;
+import com.healthcare.dto.response.PageResponse;
+import com.healthcare.enums.AppointmentStatus;
 
 public interface AppointmentService {
 	
@@ -11,11 +11,33 @@ public interface AppointmentService {
 	
 	AppointmentResponse getAppointment(Long id);
 	
-	List<AppointmentResponse> getAllAppointments();
-	
-	List<AppointmentResponse>  getDoctorAppointments(Long doctorId);
-	
-	List<AppointmentResponse> getPatientAppointments(Long patientId);
+	PageResponse<AppointmentResponse> getAllAppointments(
+	        int pageNo,
+	        int pageSize,
+	        String sortBy,
+	        String sortDir);
+
+	PageResponse<AppointmentResponse> getAppointmentsByStatus(
+	        AppointmentStatus status,
+	        int pageNo,
+	        int pageSize,
+	        String sortBy,
+	        String sortDir);
+
+	PageResponse<AppointmentResponse> getAppointmentsByDoctor(
+	        Long doctorId,
+	        int pageNo,
+	        int pageSize,
+	        String sortBy,
+	        String sortDir);
+
+	PageResponse<AppointmentResponse> getAppointmentsByPatient(
+	        Long patientId,
+	        int pageNo,
+	        int pageSize,
+	        String sortBy,
+	        String sortDir);
 	
 	void cancelAppointment(Long id);
+	
 }

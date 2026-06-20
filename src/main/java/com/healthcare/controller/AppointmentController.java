@@ -1,18 +1,19 @@
 package com.healthcare.controller;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthcare.dto.request.AppointmentRequest;
 import com.healthcare.dto.response.ApiResponse;
 import com.healthcare.dto.response.AppointmentResponse;
+import com.healthcare.dto.response.PageResponse;
+import com.healthcare.enums.AppointmentStatus;
 import com.healthcare.service.AppointmentService;
 
 import jakarta.validation.Valid;
@@ -46,32 +47,80 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public ApiResponse<List<AppointmentResponse>> getAllAppointments() {
+    public ApiResponse<PageResponse<AppointmentResponse>>
+    getAllAppointments(
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "5")
+            int size,
+
+            @RequestParam(defaultValue = "appointmentDate")
+            String sortBy,
+
+            @RequestParam(defaultValue = "asc")
+            String sortDir) {
 
         return new ApiResponse<>(
                 true,
                 "Appointments Fetched Successfully",
-                service.getAllAppointments());
+                service.getAllAppointments(
+                        page,
+                        size,
+                        sortBy,
+                        sortDir)
+        );
     }
 
     @GetMapping("/doctor/{doctorId}")
-    public ApiResponse<List<AppointmentResponse>> getDoctorAppointments(
-            @PathVariable Long doctorId) {
+    public ApiResponse<PageResponse<AppointmentResponse>>
+    getAppointmentsByDoctor(
+            @PathVariable Long doctorId,
+            @RequestParam(defaultValue = "0")
+            int page,
+            @RequestParam(defaultValue = "5")
+            int size,
+            @RequestParam(defaultValue = "appointmentDate")
+            String sortBy,
+            @RequestParam(defaultValue = "asc")
+            String sortDir) {
 
         return new ApiResponse<>(
                 true,
-                "Doctor Appointments Fetched Successfully",
-                service.getDoctorAppointments(doctorId));
+                "Appointments Fetched Successfully",
+                service.getAppointmentsByDoctor(
+                        doctorId,
+                        page,
+                        size,
+                        sortBy,
+                        sortDir)
+        );
     }
 
     @GetMapping("/patient/{patientId}")
-    public ApiResponse<List<AppointmentResponse>> getPatientAppointments(
-            @PathVariable Long patientId) {
+    public ApiResponse<PageResponse<AppointmentResponse>>
+    getAppointmentsByPatient(
+            @PathVariable Long patientId,
+            @RequestParam(defaultValue = "0")
+            int page,
+            @RequestParam(defaultValue = "5")
+            int size,
+            @RequestParam(defaultValue = "appointmentDate")
+            String sortBy,
+            @RequestParam(defaultValue = "asc")
+            String sortDir) {
 
         return new ApiResponse<>(
                 true,
-                "Patient Appointments Fetched Successfully",
-                service.getPatientAppointments(patientId));
+                "Appointments Fetched Successfully",
+                service.getAppointmentsByPatient(
+                        patientId,
+                        page,
+                        size,
+                        sortBy,
+                        sortDir)
+        );
     }
 
     @DeleteMapping("/{id}/cancel")
@@ -84,5 +133,30 @@ public class AppointmentController {
                 true,
                 "Appointment Cancelled Successfully",
                 null);
+    }
+    
+    @GetMapping("/status")
+    public ApiResponse<PageResponse<AppointmentResponse>>
+    getAppointmentsByStatus(
+            @RequestParam AppointmentStatus status,
+            @RequestParam(defaultValue = "0")
+            int page,
+            @RequestParam(defaultValue = "5")
+            int size,
+            @RequestParam(defaultValue = "appointmentDate")
+            String sortBy,
+            @RequestParam(defaultValue = "asc")
+            String sortDir) {
+
+        return new ApiResponse<>(
+                true,
+                "Appointments Fetched Successfully",
+                service.getAppointmentsByStatus(
+                        status,
+                        page,
+                        size,
+                        sortBy,
+                        sortDir)
+        );
     }
 }

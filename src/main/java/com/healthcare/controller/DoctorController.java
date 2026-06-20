@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthcare.dto.request.DoctorRequest;
 import com.healthcare.dto.response.ApiResponse;
 import com.healthcare.dto.response.DoctorResponse;
+import com.healthcare.dto.response.PageResponse;
 import com.healthcare.service.DoctorService;
 
 import jakarta.validation.Valid;
@@ -24,62 +26,77 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DoctorController {
 
-    private final DoctorService doctorService;
+	private final DoctorService doctorService;
 
-    @PostMapping
-    public ApiResponse<DoctorResponse> addDoctor(
-            @Valid @RequestBody DoctorRequest request) {
+	@PostMapping
+	public ApiResponse<DoctorResponse> addDoctor(
+			@Valid @RequestBody DoctorRequest request) {
 
-        return new ApiResponse<>(
-                true,
-                "Doctor Added Successfully",
-                doctorService.addDoctor(request)
-        );
-    }
+		return new ApiResponse<>(
+				true, 
+				"Doctor Added Successfully", 
+				doctorService.addDoctor(request));
+	}
 
-    @GetMapping("/{id}")
-    public ApiResponse<DoctorResponse> getDoctor(
-            @PathVariable Long id) {
+	@GetMapping("/{id}")
+	public ApiResponse<DoctorResponse> getDoctor(@PathVariable Long id) {
 
-        return new ApiResponse<>(
-                true,
-                "Doctor Fetched Successfully",
-                doctorService.getDoctor(id)
-        );
-    }
+		return new ApiResponse<>(
+				true, 
+				"Doctor Fetched Successfully", 
+				doctorService.getDoctor(id));
+	}
 
-    @GetMapping
-    public ApiResponse<List<DoctorResponse>> getAllDoctors() {
+	@GetMapping
+	public ApiResponse<PageResponse<DoctorResponse>> getAllDoctors(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "5") int size,
+			@RequestParam(defaultValue = "name") String sortBy,
+			@RequestParam(defaultValue = "asc") String sortDir) {
 
-        return new ApiResponse<>(
-                true,
-                "Doctors Fetched Successfully",
-                doctorService.getAllDoctors()
-        );
-    }
+		return new ApiResponse<>(
+				true, 
+				"Doctors Fetched Successfully",
+				doctorService.getAllDoctors(page, size, sortBy, sortDir));
+	}
 
-    @PutMapping("/{id}")
-    public ApiResponse<DoctorResponse> updateDoctor(
-            @PathVariable Long id,
-            @Valid @RequestBody DoctorRequest request) {
+	@PutMapping("/{id}")
+	public ApiResponse<DoctorResponse> updateDoctor(
+			@PathVariable Long id, 
+			@Valid @RequestBody DoctorRequest request) {
 
-        return new ApiResponse<>(
-                true,
-                "Doctor Updated Successfully",
-                doctorService.updateDoctor(id, request)
-        );
-    }
+		return new ApiResponse<>(
+				true, 
+				"Doctor Updated Successfully", 
+				doctorService.updateDoctor(id, request));
+	}
 
-    @DeleteMapping("/{id}")
-    public ApiResponse<String> deleteDoctor(
-            @PathVariable Long id) {
+	@DeleteMapping("/{id}")
+	public ApiResponse<String> deleteDoctor(@PathVariable Long id) {
 
-        doctorService.deleteDoctor(id);
+		doctorService.deleteDoctor(id);
 
-        return new ApiResponse<>(
-                true,
-                "Doctor Deleted Successfully",
-                null
-        );
-    }
+		return new ApiResponse<>(
+				true, 
+				"Doctor Deleted Successfully", 
+				null);
+	}
+
+	@GetMapping("/search")
+	public ApiResponse<List<DoctorResponse>> searchDoctor(@RequestParam String keyword) {
+
+		return new ApiResponse<>(
+				true, 
+				"Doctors Found Successfully", 
+				doctorService.searchDoctor(keyword));
+	}
+
+	@GetMapping("/specialization")
+	public ApiResponse<List<DoctorResponse>> getDoctorsBySpecialization(@RequestParam String specialization) {
+
+		return new ApiResponse<>(
+				true, 
+				"Doctors Found Successfully",
+				doctorService.getDoctorsBySpecialization(specialization));
+	}
 }
