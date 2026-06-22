@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.healthcare.dto.request.LoginRequest;
 import com.healthcare.dto.request.UserRequest;
+import com.healthcare.dto.response.JwtResponse;
 import com.healthcare.dto.response.UserResponse;
 import com.healthcare.service.AuthService;
 
@@ -20,7 +22,17 @@ public class AuthController {
 	private final AuthService authService;
 
 	@PostMapping("register")
-	public UserResponse register(@Valid @RequestBody UserRequest request) {
+	public UserResponse register(
+			@Valid
+			@RequestBody UserRequest request) {
 		return authService.register(request);
+	}
+	
+	@PostMapping("/login")
+	public JwtResponse login(
+			@Valid
+			@RequestBody
+			LoginRequest loginRequest) {
+		return authService.login(loginRequest);
 	}
 }
