@@ -18,16 +18,26 @@ import com.healthcare.dto.response.PageResponse;
 import com.healthcare.dto.response.PatientResponse;
 import com.healthcare.service.PatientService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/patients")
 @RequiredArgsConstructor
+@Tag(
+	    name = "Patient Management",
+	    description = "Patient CRUD APIs"
+	)
 public class PatientController {
 
 	private final PatientService service;
 
+	@Operation(
+		    summary = "Add Patient",
+		    description = "Creates a new patient."
+		)
 	@PostMapping
 	public ApiResponse<PatientResponse> addPatient(@Valid @RequestBody PatientRequest request) {
 
@@ -37,6 +47,10 @@ public class PatientController {
 				service.addPatient(request));
 	}
 
+	@Operation(
+		    summary = "Get Patient By ID",
+		    description = "Retrieves patient details by ID."
+		)
 	@GetMapping("/{id}")
 	public ApiResponse<PatientResponse> getPatient(@PathVariable Long id) {
 
@@ -46,6 +60,10 @@ public class PatientController {
 				service.getPatient(id));
 	}
 
+	@Operation(
+		    summary = "Get All Patients",
+		    description = "Retrieves all patients with pagination and sorting."
+		)
 	@GetMapping
 	public ApiResponse<PageResponse<PatientResponse>> getAllPatients(
 			@RequestParam(defaultValue = "0") int page,
@@ -57,6 +75,10 @@ public class PatientController {
 				service.getAllPatients(page, size, sortBy, sortDir));
 	}
 
+	@Operation(
+		    summary = "Update Patient",
+		    description = "Updates patient details."
+		)
 	@PutMapping("/{id}")
 	public ApiResponse<PatientResponse> updatePatient(@PathVariable Long id,
 			@Valid @RequestBody PatientRequest request) {
@@ -67,6 +89,10 @@ public class PatientController {
 				service.updatePatient(id, request));
 	}
 
+	@Operation(
+		    summary = "Delete Patient",
+		    description = "Deletes a patient by ID."
+		)
 	@DeleteMapping("/{id}")
 	public ApiResponse<String> deletePatient(@PathVariable Long id) {
 
@@ -78,6 +104,10 @@ public class PatientController {
 				null);
 	}
 
+	@Operation(
+		    summary = "Search Patients",
+		    description = "Searches patients using a keyword."
+		)
 	@GetMapping("/search")
 	public ApiResponse<List<PatientResponse>> searchPatient(@RequestParam String keyword) {
 

@@ -16,14 +16,24 @@ import com.healthcare.dto.response.PageResponse;
 import com.healthcare.dto.response.UserResponse;
 import com.healthcare.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
+@Tag(
+	    name = "User Management",
+	    description = "User CRUD APIs"
+	)
 public class UserController {
 	private final UserService userService;
 
+	@Operation(
+		    summary = "Add User",
+		    description = "Creates a new user."
+		)
 	@PostMapping
 	public ApiResponse<UserResponse>  addUser(@RequestBody UserRequest request) {
 		return new ApiResponse<>(true,
@@ -31,6 +41,10 @@ public class UserController {
 				userService.addUser(request));
 	}
 
+	@Operation(
+		    summary = "Get User By ID",
+		    description = "Retrieves user details by ID."
+		)
 	@GetMapping("/{id}")
 	public ApiResponse<UserResponse>  getUser(@PathVariable Long id) {
 		return new ApiResponse<>(true,
@@ -38,6 +52,10 @@ public class UserController {
 				userService.getUser(id));
 	}
 
+	@Operation(
+		    summary = "Get All Users",
+		    description = "Retrieves all users with pagination and sorting."
+		)
 	@GetMapping
 	public ApiResponse<PageResponse<UserResponse>> getAllUsers(
 
@@ -61,6 +79,10 @@ public class UserController {
 	    );
 	}
 	
+	@Operation(
+		    summary = "Search Users",
+		    description = "Searches users using a keyword."
+		)
 	@GetMapping("/search")
 	public ApiResponse<List<UserResponse>> searchUser(
 	        @RequestParam String keyword) {

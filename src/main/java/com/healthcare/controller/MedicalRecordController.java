@@ -15,16 +15,26 @@ import com.healthcare.dto.response.MedicalRecordResponse;
 import com.healthcare.dto.response.PageResponse;
 import com.healthcare.service.MedicalRecordService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/medical-records")
+@Tag(
+	    name = "Medical Record Management",
+	    description = "Medical Record APIs"
+	)
 public class MedicalRecordController {
 
     private final MedicalRecordService service;
 
+    @Operation(
+    	    summary = "Add Medical Record",
+    	    description = "Creates a new medical record."
+    	)
     @PostMapping
     public ApiResponse<MedicalRecordResponse> createRecord(
             @Valid @RequestBody MedicalRecordRequest request) {
@@ -35,6 +45,10 @@ public class MedicalRecordController {
                 service.createReport(request));
     }
 
+    @Operation(
+    	    summary = "Update Medical Record",
+    	    description = "Updates medical record details."
+    	)
     @PutMapping("/{id}")
     public ApiResponse<MedicalRecordResponse> updateRecord(
             @PathVariable Long id,
@@ -46,6 +60,10 @@ public class MedicalRecordController {
                 service.updateReport(id, request));
     }
 
+    @Operation(
+    	    summary = "Get Medical Records By Patient ID",
+    	    description = "Retrieves medical records of a patient."
+    	)
     @GetMapping("/patient/{patientId}")
     public ApiResponse<PageResponse<MedicalRecordResponse>>
     getMedicalRecordsByPatient(

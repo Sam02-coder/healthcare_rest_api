@@ -18,16 +18,26 @@ import com.healthcare.dto.response.DoctorResponse;
 import com.healthcare.dto.response.PageResponse;
 import com.healthcare.service.DoctorService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/doctors")
 @RequiredArgsConstructor
+@Tag(
+	    name = "Doctor Management",
+	    description = "Doctor CRUD APIs"
+	)
 public class DoctorController {
 
 	private final DoctorService doctorService;
 
+	@Operation(
+		    summary = "Add Doctor",
+		    description = "Creates a new doctor."
+		)
 	@PostMapping
 	public ApiResponse<DoctorResponse> addDoctor(
 			@Valid @RequestBody DoctorRequest request) {
@@ -38,6 +48,10 @@ public class DoctorController {
 				doctorService.addDoctor(request));
 	}
 
+	@Operation(
+		    summary = "Get Doctor By ID",
+		    description = "Retrieves doctor details by ID."
+		)
 	@GetMapping("/{id}")
 	public ApiResponse<DoctorResponse> getDoctor(@PathVariable Long id) {
 
@@ -47,6 +61,10 @@ public class DoctorController {
 				doctorService.getDoctor(id));
 	}
 
+	@Operation(
+		    summary = "Get All Doctors",
+		    description = "Retrieves all doctors with pagination and sorting."
+		)
 	@GetMapping
 	public ApiResponse<PageResponse<DoctorResponse>> getAllDoctors(
 			@RequestParam(defaultValue = "0") int page,
@@ -60,6 +78,10 @@ public class DoctorController {
 				doctorService.getAllDoctors(page, size, sortBy, sortDir));
 	}
 
+	@Operation(
+		    summary = "Update Doctor",
+		    description = "Updates doctor details."
+		)
 	@PutMapping("/{id}")
 	public ApiResponse<DoctorResponse> updateDoctor(
 			@PathVariable Long id, 
@@ -71,6 +93,10 @@ public class DoctorController {
 				doctorService.updateDoctor(id, request));
 	}
 
+	@Operation(
+		    summary = "Delete Doctor",
+		    description = "Deletes a doctor by ID."
+		)
 	@DeleteMapping("/{id}")
 	public ApiResponse<String> deleteDoctor(@PathVariable Long id) {
 
@@ -82,6 +108,10 @@ public class DoctorController {
 				null);
 	}
 
+	@Operation(
+		    summary = "Search Doctors",
+		    description = "Searches doctors using a keyword."
+		)
 	@GetMapping("/search")
 	public ApiResponse<List<DoctorResponse>> searchDoctor(@RequestParam String keyword) {
 
@@ -91,6 +121,10 @@ public class DoctorController {
 				doctorService.searchDoctor(keyword));
 	}
 
+	@Operation(
+		    summary = "Get Doctors By Specialization",
+		    description = "Retrieves doctors by specialization."
+		)
 	@GetMapping("/specialization")
 	public ApiResponse<List<DoctorResponse>> getDoctorsBySpecialization(@RequestParam String specialization) {
 
