@@ -20,7 +20,9 @@ import com.healthcare.service.DoctorService;
 import com.healthcare.util.AppConstants;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DoctorServiceImpl implements DoctorService {
@@ -29,10 +31,14 @@ public class DoctorServiceImpl implements DoctorService {
 
 	@Override
 	public DoctorResponse addDoctor(DoctorRequest request) {
+		
+		log.info("Adding new doctor with email: {}", request.getEmail());
 
 		if (doctorRepository.existsByEmail(request.getEmail())) {
 
-			throw new DuplicateResourceException("Email already exists");
+		    log.warn("Doctor registration failed. Email already exists: {}", request.getEmail());
+
+		    throw new DuplicateResourceException("Email already exists");
 		}
 
 		Doctor doctor = new Doctor();
@@ -44,6 +50,8 @@ public class DoctorServiceImpl implements DoctorService {
 		doctor.setExperience(request.getExperience());
 
 		Doctor savedDoctor = doctorRepository.save(doctor);
+		
+		log.info("Doctor created successfully with ID: {}", savedDoctor.getId());
 
 		return DoctorMapper.mapToResponse(savedDoctor);
 	}
@@ -52,7 +60,12 @@ public class DoctorServiceImpl implements DoctorService {
 	public DoctorResponse getDoctor(Long id) {
 
 		Doctor doctor = doctorRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.DOCTOR_NOT_FOUND));
+		        .orElseThrow(() -> {
+
+		            log.warn("Doctor not found with ID: {}", id);
+
+		            return new ResourceNotFoundException(AppConstants.DOCTOR_NOT_FOUND);
+		        });
 
 		return DoctorMapper.mapToResponse(doctor);
 	}
@@ -63,6 +76,9 @@ public class DoctorServiceImpl implements DoctorService {
 			int pageSize,
 			String sortBy,
 			String sortDir) {
+		
+		log.info("Fetching doctors. Page: {}, Size: {}, SortBy: {}, Direction: {}",
+		        pageNo, pageSize, sortBy, sortDir);
 
 		Sort sort = sortDir.equalsIgnoreCase("asc")
 	            ? Sort.by(sortBy).ascending()
@@ -92,6 +108,8 @@ public class DoctorServiceImpl implements DoctorService {
 
 	@Override
 	public DoctorResponse updateDoctor(Long id, DoctorRequest request) {
+		
+		log.info("Updating doctor with ID: {}", id);
 
 		Doctor doctor = doctorRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.DOCTOR_NOT_FOUND));
@@ -103,6 +121,8 @@ public class DoctorServiceImpl implements DoctorService {
 		doctor.setExperience(request.getExperience());
 
 		Doctor updatedDoctor = doctorRepository.save(doctor);
+		
+		log.info("Doctor updated successfully with ID: {}", updatedDoctor.getId());
 
 		return DoctorMapper.mapToResponse(updatedDoctor);
 	}
@@ -110,15 +130,21 @@ public class DoctorServiceImpl implements DoctorService {
 	@Override
 	public void deleteDoctor(Long id) {
 
+		log.info("Deleting doctor with ID: {}", id);
+		
 		Doctor doctor = doctorRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.DOCTOR_NOT_FOUND));
 
 		doctorRepository.delete(doctor);
+		
+		log.info("Doctor deleted succesfully with ID: {}", id);
 	}
 	
 	@Override
 	public List<DoctorResponse> searchDoctor(
 	        String keyword) {
+		
+		log.info("Searching doctors with keyword: {}", keyword);
 
 	    return doctorRepository
 	            .findByNameContainingIgnoreCase(keyword)
@@ -131,6 +157,8 @@ public class DoctorServiceImpl implements DoctorService {
 	public List<DoctorResponse> getDoctorsBySpecialization(
 	        String specialization) {
 
+		log.info("Fetching doctors with specialization: {}", specialization);
+		
 	    return doctorRepository
 	            .findBySpecializationContainingIgnoreCase(
 	                    specialization)

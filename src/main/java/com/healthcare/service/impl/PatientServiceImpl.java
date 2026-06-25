@@ -20,7 +20,9 @@ import com.healthcare.service.PatientService;
 import com.healthcare.util.AppConstants;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PatientServiceImpl implements PatientService {
@@ -28,8 +30,12 @@ public class PatientServiceImpl implements PatientService {
 
 	@Override
 	public PatientResponse addPatient(PatientRequest request) {
+		
+		log.info("Adding new patient with email: {}", request.getEmail());
+		
 		if (repository.existsByEmail(request.getEmail())) {
-
+			
+		log.warn("Patient registration failed. Email already exists: {}", request.getEmail());
 			throw new DuplicateResourceException("Email already exists");
 		}
 
@@ -43,13 +49,20 @@ public class PatientServiceImpl implements PatientService {
 		patient.setAddress(request.getAddress());
 
 		Patient savePatient = repository.save(patient);
+		
+		log.info("Patient created succesfully with ID: {}", savePatient.getId());
+		
 		return PatientMapper.mapToResponse(savePatient);
 	}
 
 	@Override
 	public PatientResponse getPatient(Long id) {
 		Patient patient = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PATIENT_NOT_FOUND));
+				.orElseThrow(() ->
+				{
+					log.warn("Patient not found with ID: {}", id);
+					return new ResourceNotFoundException(AppConstants.PATIENT_NOT_FOUND);
+				});
 
 		return PatientMapper.mapToResponse(patient);
 	}
@@ -60,6 +73,9 @@ public class PatientServiceImpl implements PatientService {
 			int pageSize, 
 			String sortBy, 
 			String sortDir) {
+		
+		log.info("Fetching patients. Page: {}, Size: {}, SortBy: {}, Direction: {}", 
+				pageNo, pageSize, sortBy, sortDir);
 
 		Sort sort = sortDir.equalsIgnoreCase("asc") 
 				? Sort.by(sortBy).ascending() 
@@ -90,6 +106,9 @@ public class PatientServiceImpl implements PatientService {
 
 	@Override
 	public PatientResponse updatePatient(Long id, PatientRequest request) {
+		
+		log.info("Updating patient with ID: {}", id);
+		
 		Patient patient = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PATIENT_NOT_FOUND));
 		patient.setName(request.getName());
@@ -100,15 +119,22 @@ public class PatientServiceImpl implements PatientService {
 		patient.setAddress(request.getAddress());
 
 		Patient updatePatient = repository.save(patient);
+		
+		log.info("Patient updated successfully with ID: {}", updatePatient.getId());
+		
 		return PatientMapper.mapToResponse(updatePatient);
 	}
 
 	@Override
 	public void deletePatient(Long id) {
 		Patient patient = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PATIENT_NOT_FOUND));
+				.orElseThrow(() ->{
+					log.info("Deleting patient with ID: {}", id);
+					return new ResourceNotFoundException(AppConstants.PATIENT_NOT_FOUND);
+				});
 		repository.delete(patient);
-
+		
+		log.info("Patient deleted successfully with ID: {}", id);
 	}
 
 	@Override

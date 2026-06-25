@@ -20,7 +20,9 @@ import com.healthcare.service.UserService;
 import com.healthcare.util.AppConstants;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -30,7 +32,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserResponse addUser(UserRequest request) {
 		
+		log.info("Creating user with email: {}", request.getEmail());
+		
 		if(userRepository.existsByEmail(request.getEmail())) {
+			
+			log.warn("Registration failed. Email already exists: {}", request.getEmail());
+			
 			throw new DuplicateResourceException("Email already exists");
 		}
 		User user=new User();
@@ -41,6 +48,9 @@ public class UserServiceImpl implements UserService {
 		user.setRole(request.getRole());
 		
 		User savedUser=userRepository.save(user);
+		
+		log.info("User created successfully with ID: {}", savedUser.getId());
+		
 		return UserMapper.map(savedUser);
 	}
 
@@ -50,6 +60,9 @@ public class UserServiceImpl implements UserService {
 	        int pageSize,
 	        String sortBy,
 	        String sortDir) {
+		
+		log.info("Fetching users. Page: {}, Size: {}, SortBy: {}, Direction: {}",
+	            pageNo, pageSize, sortBy, sortDir);
 
 	    Sort sort = sortDir.equalsIgnoreCase("asc")
 	            ? Sort.by(sortBy).ascending()
@@ -86,7 +99,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserResponse getUser(Long id) {
 		User user=userRepository.findById(id)
-				.orElseThrow(()-> new ResourceNotFoundException(AppConstants.USER_NOT_FOUND));
+				.orElseThrow(()-> { log.warn("User not found with ID: {}", id);
+				
+				return new ResourceNotFoundException(AppConstants.USER_NOT_FOUND);
+				});
 		return UserMapper.map(user);
 	}
 	

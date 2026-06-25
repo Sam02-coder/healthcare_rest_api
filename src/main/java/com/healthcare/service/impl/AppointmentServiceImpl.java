@@ -23,7 +23,9 @@ import com.healthcare.service.AppointmentService;
 import com.healthcare.util.AppConstants;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AppointmentServiceImpl implements AppointmentService {
@@ -34,11 +36,25 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	@Override
 	public AppointmentResponse bookAppointment(AppointmentRequest request) {
+		
+		log.info("Booking appointment. Patient ID: {}, Doctor ID: {}",
+		        request.getPatientId(), request.getDoctorId());
+		
 		Doctor doctor = doctorRepository.findById(request.getDoctorId())
-				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.DOCTOR_NOT_FOUND));
+		        .orElseThrow(() -> {
+
+		            log.warn("Doctor not found with ID: {}", request.getDoctorId());
+
+		            return new ResourceNotFoundException(AppConstants.DOCTOR_NOT_FOUND);
+		        });
 
 		Patient patient = patientRepository.findById(request.getPatientId())
-				.orElseThrow(() -> new ResourceNotFoundException(AppConstants.PATIENT_NOT_FOUND));
+		        .orElseThrow(() -> {
+
+		            log.warn("Patient not found with ID: {}", request.getPatientId());
+
+		            return new ResourceNotFoundException(AppConstants.PATIENT_NOT_FOUND);
+		        });
 
 		Appointment appointment = new Appointment();
 
@@ -50,6 +66,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 		appointment.setStatus(AppointmentStatus.SCHEDULED);
 
 		Appointment save = repository.save(appointment);
+		
+		log.info("Appointment booked successfully with ID: {}", save.getId());
+		
 		return AppointmentMapper.map(save);
 	}
 
@@ -66,6 +85,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 	        int pageSize,
 	        String sortBy,
 	        String sortDir) {
+		
+		log.info("Fetching appointments. Page: {}, Size: {}, SortBy: {}, Direction: {}",
+		        pageNo, pageSize, sortBy, sortDir);
 
 	    Sort sort = sortDir.equalsIgnoreCase("asc")
 	            ? Sort.by(sortBy).ascending()
@@ -103,6 +125,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 	        String sortBy,
 	        String sortDir) {
 
+		log.info("Fetching appointments for Patient ID: {}", patientId);
+		
 	    Sort sort = sortDir.equalsIgnoreCase("asc")
 	            ? Sort.by(sortBy).ascending()
 	            : Sort.by(sortBy).descending();
@@ -141,6 +165,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 	        int pageSize,
 	        String sortBy,
 	        String sortDir) {
+		
+		log.info("Fetching appointments for Doctor ID: {}", doctorId);
 
 	    Sort sort = sortDir.equalsIgnoreCase("asc")
 	            ? Sort.by(sortBy).ascending()
@@ -178,6 +204,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 	        int pageSize,
 	        String sortBy,
 	        String sortDir) {
+		
+		log.info("Fetching appointments with status: {}", status);
 
 	    Sort sort = sortDir.equalsIgnoreCase("asc")
 	            ? Sort.by(sortBy).ascending()
@@ -213,8 +241,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 		Appointment appointment=repository.findById(id)
 				.orElseThrow(()-> new ResourceNotFoundException(AppConstants.APPOINTMENT_NOT_FOUND));
 		
-		appointment.setStatus(AppointmentStatus.CANCELLD);
+		appointment.setStatus(AppointmentStatus.CANCELLED);
 		repository.save(appointment);
+		
+		log.info("Appointment cancelled successfully with ID: {}", id);
 	}
 
 }

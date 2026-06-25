@@ -16,7 +16,9 @@ import com.healthcare.security.JwtUtil;
 import com.healthcare.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -28,7 +30,12 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public UserResponse register(UserRequest request) {
+		
+		log.info("User registration stated for email: {}", request.getEmail());
 		if (userRepository.existsByEmail(request.getEmail())) {
+			
+			log.warn("Registration failed. Email already exists: {}", request.getEmail());
+			
 			throw new DuplicateResourceException("Email already exists");
 		}
 		User user = new User();
@@ -39,6 +46,8 @@ public class AuthServiceImpl implements AuthService {
 		user.setRole(request.getRole());
 
 		User saved = userRepository.save(user);
+		
+		log.info("User registered succesfully with ID: {}", saved.getId());
 
 		UserResponse response = new UserResponse();
 		
@@ -46,12 +55,15 @@ public class AuthServiceImpl implements AuthService {
 		response.setUsername(saved.getUsername());
 		response.setEmail(saved.getEmail());
 		response.setRole(saved.getRole());
-		
+				
 		return response;
 	}
 
 	@Override
 	public JwtResponse login(LoginRequest loginRequest) {
+		
+		log.info("Login attempt for email: {}", loginRequest.getEmail());
+		
 		authenticationManager
 		.authenticate(
 				new UsernamePasswordAuthenticationToken(
@@ -60,6 +72,8 @@ public class AuthServiceImpl implements AuthService {
 		
 		User user=userRepository.findByEmail(loginRequest.getEmail()).orElseThrow();
 		
+		log.info("User logged in successfully: {}", user.getEmail());
+		
 		String token=jwtUtil.generateToken(user.getEmail());
 		
 		JwtResponse jwtResponse=new JwtResponse();
@@ -67,6 +81,8 @@ public class AuthServiceImpl implements AuthService {
 		jwtResponse.setToken(token);
 		jwtResponse.setUsername(user.getUsername());
 		jwtResponse.setRole(user.getRole().name());
+		
+		log.debug("JWT token generated for user: {}", user.getEmail());
 		
 		return jwtResponse;
 	}

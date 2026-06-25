@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: healthcare
+
+  profiles:
+    active: dev
+
+jwt:
+  expiration: 86400000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+  endpoint:
+    health:
+      show-details: always
+
+info:
+  app:
+    name: Healthcare REST API
+    version: 1.0.0
+    description: Production Ready Healthcare REST API
+    developer: Somashekhar M Y

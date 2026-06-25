@@ -1,0 +1,125 @@
+2026-06-25T13:16:08.011+05:30  INFO 2656 --- [healthcare] [restartedMain] com.healthcare.HealthcareApplication     : Starting HealthcareApplication using Java 17.0.12 with PID 2656 (C:\Users\LENOVO\Downloads\healthcare\healthcare\target\classes started by LENOVO in C:\Users\LENOVO\Downloads\healthcare\healthcare)
+2026-06-25T13:16:08.012+05:30 DEBUG 2656 --- [healthcare] [restartedMain] com.healthcare.HealthcareApplication     : Running with Spring Boot v3.5.15, Spring v6.2.19
+2026-06-25T13:16:08.013+05:30  INFO 2656 --- [healthcare] [restartedMain] com.healthcare.HealthcareApplication     : The following 1 profile is active: "dev"
+2026-06-25T13:16:08.802+05:30  INFO 2656 --- [healthcare] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-25T13:16:08.883+05:30  INFO 2656 --- [healthcare] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 79 ms. Found 5 JPA repository interfaces.
+2026-06-25T13:16:09.284+05:30  INFO 2656 --- [healthcare] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-06-25T13:16:09.285+05:30  INFO 2656 --- [healthcare] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-25T13:16:09.286+05:30  INFO 2656 --- [healthcare] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.55]
+2026-06-25T13:16:09.327+05:30  INFO 2656 --- [healthcare] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-06-25T13:16:09.327+05:30  INFO 2656 --- [healthcare] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1311 ms
+2026-06-25T13:16:09.555+05:30  INFO 2656 --- [healthcare] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-25T13:16:09.561+05:30  INFO 2656 --- [healthcare] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-06-25T13:16:09.589+05:30  INFO 2656 --- [healthcare] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-25T13:16:09.594+05:30  INFO 2656 --- [healthcare] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2026-06-25T13:16:09.625+05:30  INFO 2656 --- [healthcare] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4bb18e08
+2026-06-25T13:16:09.626+05:30  INFO 2656 --- [healthcare] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2026-06-25T13:16:09.628+05:30  INFO 2656 --- [healthcare] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-3)']
+	Database driver: undefined/unknown
+	Database version: 8.0.42
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-25T13:16:09.905+05:30  INFO 2656 --- [healthcare] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-25T13:16:09.976+05:30  INFO 2656 --- [healthcare] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-25T13:16:10.082+05:30 DEBUG 2656 --- [healthcare] [restartedMain] c.h.security.JwtAuthenticationFilter     : Filter 'jwtAuthenticationFilter' configured for use
+2026-06-25T13:16:10.260+05:30  INFO 2656 --- [healthcare] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-06-25T13:16:10.388+05:30  WARN 2656 --- [healthcare] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-25T13:16:10.663+05:30  INFO 2656 --- [healthcare] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-06-25T13:16:10.889+05:30  INFO 2656 --- [healthcare] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-06-25T13:16:10.919+05:30  INFO 2656 --- [healthcare] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-06-25T13:16:10.938+05:30  INFO 2656 --- [healthcare] [restartedMain] com.healthcare.HealthcareApplication     : Started HealthcareApplication in 3.06 seconds (process running for 456.062)
+2026-06-25T13:16:10.940+05:30  WARN 2656 --- [healthcare] [restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-06-25T13:16:10.942+05:30  WARN 2656 --- [healthcare] [restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-06-25T13:16:10.949+05:30  INFO 2656 --- [healthcare] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+   LogFileWebEndpointAutoConfiguration#logFileWebEndpoint matched:
+      - Log File found logging.file.name logs/healthcare-dev.log (LogFileWebEndpointAutoConfiguration.LogFileCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.boot.actuate.logging.LogFileWebEndpoint; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+
+Negative matches:
+-----------------
+
+    None
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+2026-06-25T13:16:12.362+05:30  INFO 2656 --- [healthcare] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-06-25T13:16:12.365+05:30  INFO 2656 --- [healthcare] [Thread-11] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-25T13:16:13.160+05:30  INFO 2656 --- [healthcare] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2026-06-25T13:16:13.174+05:30  INFO 2656 --- [healthcare] [Thread-11] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-06-25T13:16:13.176+05:30  INFO 2656 --- [healthcare] [Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2026-06-25T13:16:13.199+05:30  INFO 2656 --- [healthcare] [Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+2026-06-25T13:16:13.439+05:30  INFO 2656 --- [healthcare] [restartedMain] com.healthcare.HealthcareApplication     : Starting HealthcareApplication using Java 17.0.12 with PID 2656 (C:\Users\LENOVO\Downloads\healthcare\healthcare\target\classes started by LENOVO in C:\Users\LENOVO\Downloads\healthcare\healthcare)
+2026-06-25T13:16:13.440+05:30 DEBUG 2656 --- [healthcare] [restartedMain] com.healthcare.HealthcareApplication     : Running with Spring Boot v3.5.15, Spring v6.2.19
+2026-06-25T13:16:13.440+05:30  INFO 2656 --- [healthcare] [restartedMain] com.healthcare.HealthcareApplication     : The following 1 profile is active: "dev"
+2026-06-25T13:16:14.409+05:30  INFO 2656 --- [healthcare] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-25T13:16:14.450+05:30  INFO 2656 --- [healthcare] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 38 ms. Found 5 JPA repository interfaces.
+2026-06-25T13:16:14.715+05:30  INFO 2656 --- [healthcare] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-06-25T13:16:14.716+05:30  INFO 2656 --- [healthcare] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-25T13:16:14.717+05:30  INFO 2656 --- [healthcare] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.55]
+2026-06-25T13:16:14.752+05:30  INFO 2656 --- [healthcare] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-06-25T13:16:14.752+05:30  INFO 2656 --- [healthcare] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1307 ms
+2026-06-25T13:16:14.839+05:30  INFO 2656 --- [healthcare] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-25T13:16:14.844+05:30  INFO 2656 --- [healthcare] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-06-25T13:16:14.857+05:30  INFO 2656 --- [healthcare] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-25T13:16:14.858+05:30  INFO 2656 --- [healthcare] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2026-06-25T13:16:14.881+05:30  INFO 2656 --- [healthcare] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection com.mysql.cj.jdbc.ConnectionImpl@231af50f
+2026-06-25T13:16:14.882+05:30  INFO 2656 --- [healthcare] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2026-06-25T13:16:14.884+05:30  INFO 2656 --- [healthcare] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-4)']
+	Database driver: undefined/unknown
+	Database version: 8.0.42
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-25T13:16:15.184+05:30  INFO 2656 --- [healthcare] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-25T13:16:15.249+05:30  INFO 2656 --- [healthcare] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-25T13:16:15.356+05:30 DEBUG 2656 --- [healthcare] [restartedMain] c.h.security.JwtAuthenticationFilter     : Filter 'jwtAuthenticationFilter' configured for use
+2026-06-25T13:16:15.526+05:30  INFO 2656 --- [healthcare] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-06-25T13:16:15.616+05:30  WARN 2656 --- [healthcare] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-25T13:16:15.871+05:30  INFO 2656 --- [healthcare] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-06-25T13:16:16.125+05:30  INFO 2656 --- [healthcare] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-06-25T13:16:16.165+05:30  INFO 2656 --- [healthcare] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-06-25T13:16:16.194+05:30  INFO 2656 --- [healthcare] [restartedMain] com.healthcare.HealthcareApplication     : Started HealthcareApplication in 2.845 seconds (process running for 461.318)
+2026-06-25T13:16:16.196+05:30  WARN 2656 --- [healthcare] [restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-06-25T13:16:16.197+05:30  WARN 2656 --- [healthcare] [restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-06-25T13:16:16.199+05:30  INFO 2656 --- [healthcare] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2026-06-25T13:16:29.698+05:30  INFO 2656 --- [healthcare] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-25T13:16:29.698+05:30  INFO 2656 --- [healthcare] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-25T13:16:29.701+05:30  INFO 2656 --- [healthcare] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-06-25T13:16:31.031+05:30  INFO 2656 --- [healthcare] [http-nio-8080-exec-9] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 698 ms
+2026-06-25T13:16:52.148+05:30  INFO 2656 --- [healthcare] [http-nio-8080-exec-10] c.h.service.impl.AuthServiceImpl         : User registration stated for email: user@example.com
+2026-06-25T13:16:52.412+05:30  WARN 2656 --- [healthcare] [http-nio-8080-exec-10] c.h.service.impl.AuthServiceImpl         : Registration failed. Email already exists: user@example.com
+2026-06-25T13:16:52.422+05:30  WARN 2656 --- [healthcare] [http-nio-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.healthcare.exception.DuplicateResourceException: Email already exists]
+2026-06-25T13:19:25.819+05:30  INFO 2656 --- [healthcare] [RMI TCP Connection(16)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2026-06-25T13:19:25.822+05:30  INFO 2656 --- [healthcare] [RMI TCP Connection(16)-127.0.0.1] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-25T13:19:26.222+05:30  INFO 2656 --- [healthcare] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2026-06-25T13:19:26.227+05:30  INFO 2656 --- [healthcare] [RMI TCP Connection(16)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-06-25T13:19:26.228+05:30  INFO 2656 --- [healthcare] [RMI TCP Connection(16)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown initiated...
+2026-06-25T13:19:26.234+05:30  INFO 2656 --- [healthcare] [RMI TCP Connection(16)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown completed.
